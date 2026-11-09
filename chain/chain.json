@@ -1,0 +1,395 @@
+{
+  "$schema": "./chain.schema.json",
+  "chainVersion": "0.1.0",
+  "org": "ZYDRAXYL",
+  "self": "TOOLS",
+  "repos": {
+    "APP": {
+      "repo": "TiaMax-APP",
+      "role": "hub",
+      "private": true,
+      "owns": [
+        ".claude/",
+        "chain/",
+        "docs/",
+        "process/",
+        "tools/"
+      ],
+      "releases": null,
+      "versionSource": null
+    },
+    "SDB": {
+      "repo": "TiaMax-SDB",
+      "role": "schema",
+      "private": false,
+      "owns": [
+        "schema/",
+        "supabase/",
+        "assets/",
+        "generated/"
+      ],
+      "releases": "sdb-v*",
+      "versionSource": "sdb.json#sdbVersion"
+    },
+    "TRX": {
+      "repo": "TiaMax-TRX",
+      "role": "service",
+      "private": false,
+      "owns": [
+        "netlify/",
+        "public/",
+        "netlify.toml"
+      ],
+      "releases": null,
+      "versionSource": "package.json#version"
+    },
+    "EXE": {
+      "repo": "TiaMax-EXE",
+      "role": "app",
+      "private": true,
+      "owns": [
+        "electron/"
+      ],
+      "releases": "v*",
+      "versionSource": "package.json#version"
+    },
+    "PWA": {
+      "repo": "TiaMax-PWA",
+      "role": "build",
+      "private": false,
+      "owns": [
+        "tools/",
+        "shim/",
+        "dist/"
+      ],
+      "releases": null,
+      "versionSource": "package.json#version"
+    },
+    "PKG": {
+      "repo": "TiaMax-PKG",
+      "role": "content",
+      "private": false,
+      "owns": [
+        "packages/",
+        "index.json"
+      ],
+      "releases": "pkg-v*",
+      "versionSource": "package.json#version"
+    },
+    "WEB": {
+      "repo": "TiaMax-WEB",
+      "role": "site",
+      "private": false,
+      "owns": [
+        "*.html",
+        "assets/"
+      ],
+      "releases": "mirror",
+      "versionSource": null
+    },
+    "DOCS": {
+      "repo": "TiaMax-DOCS",
+      "private": false,
+      "role": "docs",
+      "owns": [
+        "compatibility-matrix.md",
+        "shared/",
+        "architecture/"
+      ],
+      "releases": null,
+      "versionSource": null
+    },
+    "PLATFORM": {
+      "repo": "TiaMax-PLATFORM",
+      "private": false,
+      "role": "library",
+      "owns": [
+        "include/zx/platform/",
+        "src/",
+        "tests/"
+      ],
+      "releases": "v*",
+      "versionSource": "CMakeLists.txt#project.VERSION"
+    },
+    "LANG": {
+      "repo": "TiaMax-LANG",
+      "private": false,
+      "role": "library",
+      "owns": [
+        "include/zx/lang/",
+        "src/",
+        "tests/"
+      ],
+      "releases": "v*",
+      "versionSource": "CMakeLists.txt#project.VERSION"
+    },
+    "FRAMEWORK": {
+      "repo": "TiaMax-FRAMEWORK",
+      "private": false,
+      "role": "library",
+      "owns": [
+        "include/zx/framework/",
+        "src/",
+        "tests/"
+      ],
+      "releases": "v*",
+      "versionSource": "CMakeLists.txt#project.VERSION"
+    },
+    "ENGINE": {
+      "repo": "TiaMax-ENGINE",
+      "private": false,
+      "role": "superbuild",
+      "owns": [
+        "superbuild/",
+        "include/zx/engine/",
+        "src/",
+        "tests/"
+      ],
+      "releases": "v*",
+      "versionSource": "CMakeLists.txt#project.VERSION"
+    },
+    "TOOLS": {
+      "repo": "TiaMax-TOOLS",
+      "private": false,
+      "role": "tools",
+      "owns": [
+        "src/",
+        "tests/"
+      ],
+      "releases": "v*",
+      "versionSource": "CMakeLists.txt#project.VERSION"
+    },
+    "TOOLCHAIN": {
+      "repo": "TiaMax-TOOLCHAIN",
+      "private": false,
+      "role": "service",
+      "owns": [
+        "src/",
+        "tests/"
+      ],
+      "releases": "v*",
+      "versionSource": "CMakeLists.txt#project.VERSION"
+    }
+  },
+  "chains": {
+    "exe": [
+      "APP",
+      [
+        "SDB",
+        "TRX"
+      ],
+      "EXE",
+      [
+        "PKG",
+        "WEB",
+        "PWA"
+      ]
+    ],
+    "pwa": [
+      "APP",
+      [
+        "SDB",
+        "TRX"
+      ],
+      [
+        "EXE"
+      ],
+      "PWA",
+      "WEB"
+    ],
+    "engine": [
+      "APP",
+      "DOCS",
+      [
+        "PLATFORM",
+        "LANG"
+      ],
+      "FRAMEWORK",
+      "ENGINE",
+      [
+        "TOOLS",
+        "TOOLCHAIN"
+      ],
+      "EXE"
+    ]
+  },
+  "edges": [
+    {
+      "from": "APP",
+      "to": "SDB",
+      "carries": "claude-tooling"
+    },
+    {
+      "from": "APP",
+      "to": "EXE",
+      "carries": "claude-tooling"
+    },
+    {
+      "from": "APP",
+      "to": "PWA",
+      "carries": "claude-tooling"
+    },
+    {
+      "from": "APP",
+      "to": "PKG",
+      "carries": "claude-tooling"
+    },
+    {
+      "from": "APP",
+      "to": "WEB",
+      "carries": "claude-tooling"
+    },
+    {
+      "from": "APP",
+      "to": "TRX",
+      "carries": "claude-tooling"
+    },
+    {
+      "from": "SDB",
+      "to": "EXE",
+      "carries": "generated-schema"
+    },
+    {
+      "from": "TRX",
+      "to": "EXE",
+      "carries": "transfer-api"
+    },
+    {
+      "from": "EXE",
+      "to": "PKG",
+      "carries": "package-targets"
+    },
+    {
+      "from": "EXE",
+      "to": "WEB",
+      "carries": "release-mirror"
+    },
+    {
+      "from": "EXE",
+      "to": "PWA",
+      "carries": "app-source"
+    },
+    {
+      "from": "PWA",
+      "to": "WEB",
+      "carries": "app-source"
+    },
+    {
+      "from": "APP",
+      "to": "DOCS",
+      "carries": "claude-tooling"
+    },
+    {
+      "from": "APP",
+      "to": "PLATFORM",
+      "carries": "claude-tooling"
+    },
+    {
+      "from": "APP",
+      "to": "LANG",
+      "carries": "claude-tooling"
+    },
+    {
+      "from": "APP",
+      "to": "FRAMEWORK",
+      "carries": "claude-tooling"
+    },
+    {
+      "from": "APP",
+      "to": "ENGINE",
+      "carries": "claude-tooling"
+    },
+    {
+      "from": "APP",
+      "to": "TOOLS",
+      "carries": "claude-tooling"
+    },
+    {
+      "from": "APP",
+      "to": "TOOLCHAIN",
+      "carries": "claude-tooling"
+    },
+    {
+      "from": "DOCS",
+      "to": "PLATFORM",
+      "carries": "shared-config"
+    },
+    {
+      "from": "DOCS",
+      "to": "LANG",
+      "carries": "shared-config"
+    },
+    {
+      "from": "DOCS",
+      "to": "FRAMEWORK",
+      "carries": "shared-config"
+    },
+    {
+      "from": "DOCS",
+      "to": "ENGINE",
+      "carries": "shared-config"
+    },
+    {
+      "from": "DOCS",
+      "to": "TOOLS",
+      "carries": "shared-config"
+    },
+    {
+      "from": "DOCS",
+      "to": "TOOLCHAIN",
+      "carries": "shared-config"
+    },
+    {
+      "from": "PLATFORM",
+      "to": "FRAMEWORK",
+      "carries": "pinned-tag"
+    },
+    {
+      "from": "PLATFORM",
+      "to": "ENGINE",
+      "carries": "pinned-tag"
+    },
+    {
+      "from": "LANG",
+      "to": "ENGINE",
+      "carries": "pinned-tag"
+    },
+    {
+      "from": "FRAMEWORK",
+      "to": "ENGINE",
+      "carries": "pinned-tag"
+    },
+    {
+      "from": "ENGINE",
+      "to": "TOOLS",
+      "carries": "pinned-tag"
+    },
+    {
+      "from": "ENGINE",
+      "to": "TOOLCHAIN",
+      "carries": "pinned-tag"
+    },
+    {
+      "from": "ENGINE",
+      "to": "EXE",
+      "carries": "engine-build"
+    },
+    {
+      "from": "TOOLS",
+      "to": "EXE",
+      "carries": "tool-binaries"
+    },
+    {
+      "from": "TOOLCHAIN",
+      "to": "EXE",
+      "carries": "launcher"
+    }
+  ],
+  "propagation": {
+    "mode": "pull-request",
+    "label": "chained-update",
+    "tokenSecret": "CHAIN_TOKEN",
+    "trailerPrefix": "Chained-From",
+    "syncState": "chain/.chain-sync.json"
+  }
+}
